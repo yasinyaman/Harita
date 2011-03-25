@@ -1,0 +1,59 @@
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Page Title</title>
+  <link href="{{static_url('stil.css')}}" media="screen" rel="stylesheet"> 
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+  var map,latlng,infoWindow,markers=new Array(),marker=[],a=new Array(),b=new Array();
+  infoWindow = new google.maps.InfoWindow({});
+  function initialize() {
+    infoWindow = new google.maps.InfoWindow({});
+    latlng = new google.maps.LatLng(38.825413103424786, 35.17822265625);
+    var myOptions = {zoom: 6,center: latlng,mapTypeId: google.maps.MapTypeId.ROADMAP};
+    map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+
+    {% for i in kullanicilar %}
+    b["kullanici_adi"] = "{{i['kullanici_adi']}}";
+    b["dagitim"] = "{{i['dagitim']}}";
+    b["adsoyad"] = "{{i['ad']}} {{i['soyad']}}";
+    b["avatar"] = "{{i['avatar']}}";
+    b["kategori"] = {% if i["kategori"] == "2" %}"Geliştirici"{% end %}{% if i["kategori"] == "3" %}"Kullanıcı"{% end %}{% if i["kategori"] == "4" %}"Çevirmen"{% end %}{% if i["kategori"] == "5" %}"Diğer"{% end %};
+    b["lat"] = "{{i['koordinatlar'][0]}}";
+    b["lng"] = "{{i['koordinatlar'][1]}}";
+    a.push(b);
+    b=[]
+    {% end %}
+    for (var i = 0; i < a.length; i++) {  
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(a[i]["lat"], a[i]['lng']),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          html = '<table><tr><td><img src="'+a[i]["avatar"]+'"></td><td><b>'+a[i]["adsoyad"]+'</b><br>'+a[i]["kullanici_adi"]+'<br>Dağıtım: '+a[i]["dagitim"]+'<br>Kategori: '+a[i]["kategori"]+'</td></tr></table>';
+          infoWindow.setContent(html);
+          infoWindow.open(map, marker);
+        }
+      })(marker, i));
+    }  
+    }
+</script>
+</head>
+<body onload="initialize()">
+ <div id="header"><div id="sol">LKD HARİTA</div><div id="sag"><a href="/">Ana sayfa</a> | <a href="/hakkinda/">Hakkında</a> | <a href="/arama/">Arama</a> | {% if not kullanici_adi %}<a href="/girisyap/">Giriş Yap</a> | <a href="/kayitol/">Kayıt Ol</a>{% end %}{% if kullanici_adi %}<b><a href="/kullanici/{{ kullanici_adi }}/">{{ kullanici_adi }}</a></b> olarak giriş yaptınız.<a href="/cikisyap/">(Çıkış)</a> | <a href="/profil/duzenle/">Profil Düzenle</a>{% end %}</div></div><br>
+ <hr><br>
+ <div id="map_canvas"></div><br>
+ <div id="il_listesi">
+ 
+ {% for h in ilsayi %}
+  <div><a href="/il/{{h['_id']}}/">{{h["_id"]}}</a>({{int(h["value"]["count"])}})</div>
+ {% end %}
+ 
+ 
+ 
+ 
+ </div>
+</body>
+</html>

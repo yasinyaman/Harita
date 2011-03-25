@@ -1,0 +1,5 @@
+1)./mongodb --dbpath /data/db #data/db boş klasör
+2)tools/index_olustur.py
+3)tools/il_ekle.py
+4)python index.py
+5)127.0.0.1:8888

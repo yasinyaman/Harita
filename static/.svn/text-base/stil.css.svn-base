@@ -1,0 +1,102 @@
+#map_canvas
+{
+    width:960px;
+    height:500px;
+    margin:auto;
+    padding:auto;
+}
+#il_listesi,#header,#kullanici_bilgileri
+{
+    width:960px;
+    margin:auto;
+    padding:auto;
+    overflow:hidden;
+}
+
+#header #sol
+{
+     float:left;
+     margin:0;
+}
+
+#il_listesi div
+{
+     float:left;
+     width:320px;
+     height:30px;
+     margin:0;
+}
+
+#kullanici_bilgileri div
+{
+     float:left;
+     width:480px;
+     margin:0;
+}
+
+#header #sag
+{
+     float:right;
+     margin:0;
+}
+
+hr
+{
+    width:960px;
+    margin:auto;
+    padding:auto;
+}
+
+#arama_formu
+{
+    width:960px;
+    margin:auto;
+    padding:auto;
+}
+
+#giris_formu
+{
+    width:480px;
+    margin:auto;
+    padding:auto;
+}
+
+#profil_duzenleme,#kayitol
+{
+    width:960px;
+    margin:auto;
+    padding:auto;
+}
+
+#profil_duzenleme div,#illerdeki_kullanicilar div,#yakinlardakiler,#kayitol div
+{
+     float:left;
+     width:480px;
+     margin:0;
+}
+
+#yakinlardakiler div
+{
+     float:left;
+     width:240px;
+     margin:0;
+}
+
+#arama_sonuc,#illerdeki_kullanicilar
+{
+    width:960px;
+    margin:auto;
+    padding:auto;
+    overflow:hidden;
+}
+
+#arama_sonuc div
+{
+     float:left;
+     width:320px;
+     height:150px;
+     margin:0;
+}
+
+
+

@@ -1,0 +1,82 @@
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Page Title</title>
+  <link href="{{static_url('stil.css')}}" media="screen" rel="stylesheet"> 
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript">
+  var map,latlng,infowindow,marker;
+  function initialize() {
+    latlng = new google.maps.LatLng(38.825413103424786, 35.17822265625);
+    var myOptions = {zoom: 6,center: latlng,mapTypeId: google.maps.MapTypeId.ROADMAP};
+    map = new google.maps.Map(document.getElementById("map_canvas"),myOptions);
+    var k;
+    {% if kullanici["kategori"] == "2" %}
+    k="Geliştirici";
+    {% end %}
+    
+    {% if kullanici["kategori"] == "3" %}
+    k="Kullanıcı";
+    {% end %}
+    
+    {% if kullanici["kategori"] == "4" %}
+    k="Çevirmen";
+    {% end %}
+    
+    {% if kullanici["kategori"] == "5" %}
+    k="Diğer";
+    {% end %}
+    isaretKoy(new google.maps.LatLng {{str(kullanici["koordinatlar"][0]),str(kullanici["koordinatlar"][1])}},"{{ kullanici['ad'] }} {{ kullanici['soyad'] }}","{{ kullanici['kullanici_adi'] }}","{{kullanici['dagitim']}}","{{kullanici['avatar']}}",k);
+  }
+
+  function isaretKoy(koordinat,adsoyad,kullanici,dagitim,avatar,kategori)
+  {
+    marker = new google.maps.Marker({position: koordinat,title:kullanici});
+    marker.setMap(map);
+    html = '<table><tr><td><img src="'+avatar+'"></td><td><b>'+adsoyad+'</b><br>'+kullanici+'<br>Dağıtım: '+dagitim+'<br>Kategori: '+kategori+'</td></tr></table>';
+    infowindow = new google.maps.InfoWindow({content: html});
+    google.maps.event.addListener(marker, 'click', function() { infowindow.open(map,marker);});
+  }
+</script>
+
+</head>
+<body onload="initialize()">
+ <div id="header"><div id="sol">LKD HARİTA</div><div id="sag"><a href="/">Ana sayfa</a> | <a href="/hakkinda/">Hakkında</a> | <a href="/arama/">Arama</a> | {% if not kullanici_adi %}<a href="/girisyap/">Giriş Yap</a> | <a href="/kayitol/">Kayıt Ol</a>{% end %}{% if kullanici_adi %}<b><a href="/kullanici/{{ kullanici_adi }}/">{{ kullanici_adi }}</a></b> olarak giriş yaptınız.<a href="/cikisyap/">(Çıkış)</a> | <a href="/profil/duzenle/">Profil Düzenle</a>{% end %}</div></div><br>
+  <hr><br>
+  <div id="map_canvas"></div><br>
+  <div id="kullanici_bilgileri">
+  <div>
+  <b>{{ kullanici["ad"] }} {{ kullanici["soyad"] }}</b><br>
+  <table>
+    <tr>
+      <td><img src="{{kullanici['avatar']}}"/></td>
+      <td><a href='/kullanici/{{ kullanici["kullanici_adi"] }}/'>{{ kullanici["kullanici_adi"] }}</a><br><a href='/il/{{ kullanici["il"] }}/'>{{ kullanici["il"] }}</a><br>{% if kullanici["kategori"] == "2" %}Geliştirici{% end %}
+    {% if kullanici["kategori"] == "3" %}Kullanıcı{% end %}
+    {% if kullanici["kategori"] == "4" %}Çevirmen{% end %}
+    {% if kullanici["kategori"] == "5" %}Diğer{% end %}</td>
+    </tr>
+  </table>
+  <a href="mailto:{{ kullanici['email'] }}">{{ kullanici['email'] }}</a><br>
+  </div>
+  <div>
+  Yakınlardakiler:
+  <br>
+  <div id="yakinlardakiler">
+    {% for i in yakinlardakiler %}
+    {% if kullanici_adi != i["kullanici_adi"] %}
+    <div>
+    <table>
+    <tr>
+      <td><img src="{{ i['avatar'] }}"/></td>
+      <td><a href='/kullanici/{{ i["kullanici_adi"] }}/'>{{ i["kullanici_adi"] }}</a><br><a href='/il/{{ i["il"] }}/'>{{ i["il"] }}</a></td>
+    </tr>
+    </table>
+    </div>
+    {% end %}
+    {% end %}
+  </div>
+  </div>
+  </div>
+<br>
+</body>
+</html>

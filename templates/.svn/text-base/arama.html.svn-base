@@ -1,0 +1,37 @@
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Page Title</title>
+  <link href="{{static_url('stil.css')}}" media="screen" rel="stylesheet"> 
+</head>
+<body>
+ <div id="header"><div id="sol">LKD HARİTA</div><div id="sag"><a href="/">Ana sayfa</a> | <a href="/hakkinda/">Hakkında</a> | <a href="/arama/">Arama</a> | {% if not kullanici_adi %}<a href="/girisyap/">Giriş Yap</a> | <a href="/kayitol/">Kayıt Ol</a>{% end %}{% if kullanici_adi %}<b><a href="/kullanici/{{ kullanici_adi }}/">{{ kullanici_adi }}</a></b> olarak giriş yaptınız.<a href="/cikisyap/">(Çıkış)</a> | <a href="/profil/duzenle/">Profil Düzenle</a>{% end %}</div></div><br>
+  <hr>
+<div id="arama_formu"><br>
+<form method="post" action="/arama/">
+{{ xsrf_form_html() }}
+<table>
+<tr>
+  <td>Kategori:</td>
+  <td>
+    <select name="kategori">
+      <option value="1">Hepsi</option>
+      <option value="2">Geliştirici</option>
+      <option value="3">Kullanıcı</option>
+      <option value="4">Çevirmen</option>
+      <option value="5">Diğer</option>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td>Kullanıcı Adı:</td>
+  <td><input type="text" name="aranan" value=" "></td>
+</tr>
+<tr>
+  <td><input type="submit" value="Ara"></td>
+</tr>
+</form>
+</table>
+</div>
+</body>
+</html>
