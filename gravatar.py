@@ -1,9 +1,7 @@
 class Gravatar:
-  root_url = "http://www.gravatar.com/avatar.php"
-  def __init__(self, email, default, size):
+  root_url = "http://www.gravatar.com/avatar/"
+  def __init__(self, email):
     self.email = email
-    self.default = default
-    self.size = size
     self.gravatar_id = self.gravatar_id()
     self.gravatar_url = self.gravatar_url()
   def gravatar_id(self):
@@ -11,4 +9,4 @@ class Gravatar:
     return hashlib.md5(self.email.lower()).hexdigest()
   def gravatar_url(self):
     import urllib
-    return "%s?%s" % (self.__class__.root_url, urllib.urlencode(self.__dict__))
+    return "%s%s" % (self.__class__.root_url, self.gravatar_id)
