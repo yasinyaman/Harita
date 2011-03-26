@@ -6,5 +6,5 @@ def mapreduce():
     db = pymongo.Connection().harita
     map = "function() { emit(this.il, {count: 1});}"
     reduce = "function(key, values) {  var sum = 0;  values.forEach(function(doc) {    sum += doc.count;  });  return {count: sum};};"
-    result = db.kullanici.map_reduce(map, reduce)
+    result = db.kullanici.map_reduce(map, reduce,"map_reduce_collection")
     return result.find()
