@@ -99,7 +99,7 @@ class kayitol(Base):
         if kullanici_adi!="" and sifre!="" and sifre_tekrar!="" and email!="" and ad!="" and soyad!="" and il!="" and lat!="" and lng!="" and kategori!="" and dagitim!="":
             if not self.db.kullanici.find_one({"kullanici_adi":kullanici_adi}):
                 if sifre == sifre_tekrar:
-                    avatar = gravatar.Gravatar(email,"",50).gravatar_url
+                    avatar = gravatar.Gravatar(email).gravatar_url
                     yeni_kullanici = {"kullanici_adi":kullanici_adi,"sifre":hashlib.md5(sifre).hexdigest(),"email":email,"ad":ad,"soyad":soyad,"il":il,"koordinatlar":[float(lat),float(lng)],"kategori":kategori,"avatar":avatar,"dagitim":dagitim}
                     self.db.kullanici.save(yeni_kullanici)
                     self.set_secure_cookie("kullanici_id",self.get_user_id(kullanici_adi))
@@ -163,7 +163,7 @@ class kullanici(Base):
         kullanici=self.db.kullanici.find_one({"kullanici_adi":i})
         yakinlardakiler = self.db.kullanici.find({"koordinatlar": {"$within": {"$center": [[float(kullanici["koordinatlar"][0]),float(kullanici["koordinatlar"][1])], 3]}}})
         if self.current_user:
-            self.render("kullanici_profili.html",kullanici_adi=self.get_user_name(),kullanici = kullanici,avatar = gravatar.Gravatar(kullanici["email"],"",50).gravatar_url,yakinlardakiler=yakinlardakiler)
+            self.render("kullanici_profili.html",kullanici_adi=self.get_user_name(),kullanici = kullanici,avatar = gravatar.Gravatar(kullanici["email"]).gravatar_url,yakinlardakiler=yakinlardakiler)
         else:
             self.render("kullanici_profili.html",kullanici_adi="",kullanici = kullanici,yakinlardakiler=yakinlardakiler)
 
@@ -228,7 +228,7 @@ class profil_duzenle(Base):
             lng = self.get_argument("lng")
             kategori = self.get_argument("kategori")
             dagitim = self.get_argument("dagitim")
-            avatar = gravatar.Gravatar(email,"",50).gravatar_url
+            avatar = gravatar.Gravatar(email).gravatar_url
             print avatar
             if sifre!="" and sifre_tekrar!="" and sifre==sifre_tekrar and email!="" and ad!="" and soyad!="" and il!="" and lat!="" and lng!="" and kategori!="" and dagitim!="":
                 self.db.kullanici.update({"kullanici_adi":self.get_user_name()},{"$set":{"kullanici_adi":self.get_user_name(),"sifre":hashlib.md5(sifre).hexdigest(),"email":email,"ad":ad,"soyad":soyad,"il":il,"koordinatlar":[float(lat),float(lng)],"kategori":kategori,"dagitim":dagitim,"avatar":avatar}})
